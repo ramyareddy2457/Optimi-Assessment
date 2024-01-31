@@ -1,0 +1,46 @@
+.navbar.bg-light {
+    background-color: rgb(56, 116, 161)!important;
+  }
+
+  nav.navbar.navbar-expand-lg.navbar-light.bg-light {
+    padding-bottom: 0;
+}
+
+.active, .btn:hover {
+    background-color: white;
+  }
+
+  .row {
+    position: absolute;
+    margin-top: 40px;
+  }
+
+  li {
+    list-style-type: none;
+}
+
+h6 {
+    color: rgb(56, 116, 161);
+}
+
+mark.a1 { 
+    background-color: yellow; 
+    padding: 0;
+} 
+.projectGrid {
+    display: contents;
+}
+
+li.nav-item.active {
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+form.form-inline {
+    padding: 10px;
+}
+
+li.selected {
+    background: #dee2e6
+  }
+  

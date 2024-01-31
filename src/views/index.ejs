@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js"
+        integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww=="
+        crossorigin="anonymous">
+        </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">
+            <img src="https://optimi.co.za/wp-content/themes/divi-child/images/header/logo-white.png" width="30"
+                height="30" class="d-inline-block align-top" alt="">
+            Optimi
+        </a>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="mr-auto"></div>
+            <ul class="navbar-nav my-2 my-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Go to projects <span class="sr-only">(current)</span></a>
+                </li>
+                <div class="row" id="projects">
+                    <div class="col-12 col-sm-6 border">
+                        <form class="form-inline  ">
+                            <input class="form-control mr-sm-2" onkeyup="searchProjects()" type="search"
+                                placeholder="Search" id="searchbar" aria-label="Search">
+                        </form>
+                    </div>
+                    <div class="w-100"></div>
+
+                </div>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">products <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+        </div>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="mr-auto"></div>
+            <ul class="navbar-nav my-2 my-lg-0">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-display="static"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Profile
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-lg-right" aria-labelledby="navbarDropdown">
+                        <h6 class="dropdown-header">Dropdown header</h6>
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                    </div>
+
+                </li>
+
+            </ul>
+
+        </div>
+    </nav>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+    <script>
+        fetch('/projects', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+            },
+        })
+            .then(response => response.json())
+            .then(response => {
+                response.forEach(project => {
+                    const projectsEle = document.getElementById('projects');
+                    var innerHTML =
+                        `<div class="projectGrid">
+                            <div class="col-2 col-sm-2 border">
+                                <img src="`+ project.image.link + `" class="d-inline-block align-top" width="40px" alt="">
+                            </div>
+                            <div class="col-6 col-sm-4 border">
+                                <h6>`+ project.name + `</h6>
+                                    <ul class="ulList">`;
+
+                                        project.groups.forEach(group => {
+                                            innerHTML = innerHTML + `<li class='projectListItem' onclick="location.href='` + group.url + `'">` + group.name + `</li>`;
+                                        });
+
+                                    innerHTML = innerHTML.concat(`</ul>
+                            </div>
+                            <div class="w-100"></div>
+                        </div>
+                        `);
+                    projectsEle.innerHTML += innerHTML;
+                });
+            })
+
+        function searchProjects() {
+            let input = document.getElementById('searchbar').value
+            input = input.toLowerCase();
+
+            let projectGrids = document.getElementsByClassName('projectGrid');
+            console.log(projectGrids);
+            for (j = 0; j < projectGrids.length; j++) {
+
+                let x = projectGrids[j].getElementsByClassName('projectListItem');
+                let isSingleMatch = false;
+                for (i = 0; i < x.length; i++) {
+                    var ob = new Mark(x[i]);
+                    ob.unmark();
+                    if (!x[i].innerHTML.toLowerCase().includes(input)) {
+                        x[i].style.display = "none";
+                    }
+                    else {
+                        x[i].style.display = "list-item";
+                        isSingleMatch = true;
+
+                        ob.mark(
+                            input,
+                            { className: 'a1' }
+                        );
+                    }
+                }
+                if (!isSingleMatch) {
+                    projectGrids[j].style.display = 'none';
+                } else {
+                    projectGrids[j].style.display = 'contents';
+                }
+            }
+        }
+
+
+        var liSelected;
+        var index = -1;
+
+        document.addEventListener('keydown', function (event) {
+            var ul = document.getElementsByClassName('ulList')[0];
+            var len = ul.getElementsByTagName('li').length - 1;
+            if (event.which === 40) {
+                index++;
+                //down 
+                if (liSelected) {
+                    removeClass(liSelected, 'selected');
+                    next = ul.getElementsByTagName('li')[index];
+                    if (typeof next !== undefined && index <= len) {
+
+                        liSelected = next;
+                    } else {
+                        index = 0;
+                        liSelected = ul.getElementsByTagName('li')[0];
+                    }
+                    addClass(liSelected, 'selected');
+                    console.log(index);
+                } else {
+                    index = 0;
+
+                    liSelected = ul.getElementsByTagName('li')[0];
+                    addClass(liSelected, 'selected');
+                }
+            } else if (event.which === 38) {
+
+                //up
+                if (liSelected) {
+                    removeClass(liSelected, 'selected');
+                    index--;
+                    console.log(index);
+                    next = ul.getElementsByTagName('li')[index];
+                    if (typeof next !== undefined && index >= 0) {
+                        liSelected = next;
+                    } else {
+                        index = len;
+                        liSelected = ul.getElementsByTagName('li')[len];
+                    }
+                    addClass(liSelected, 'selected');
+                } else {
+                    index = 0;
+                    liSelected = ul.getElementsByTagName('li')[len];
+                    addClass(liSelected, 'selected');
+                }
+            }
+        }, false);
+
+        function removeClass(el, className) {
+            if (el.classList) {
+                el.classList.remove(className);
+            } else {
+                el.className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+            }
+        };
+
+        function addClass(el, className) {
+            if (el.classList) {
+                el.classList.add(className);
+            } else {
+                el.className += ' ' + className;
+            }
+        };
+    </script>
+</body>
+
+</html>

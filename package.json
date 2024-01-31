@@ -1,0 +1,20 @@
+{
+  "name": "optimi",
+  "version": "1.0.0",
+  "description": "search filter",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "nodemon src/app.js",
+    "build": "echo \"Add your build command here\""
+  },
+  "author": "Ramya",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.4.0",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
